@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/WaveFunction_v2.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/InteractiveUI.tscn" type="PackedScene" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+
+func _on_InteractiveUI_reset():
+	get_tree().reload_current_scene()
+"
+
+[node name="main_interactive" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="WaveFunction_v2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -384, -384 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="InteractiveUI" parent="CanvasLayer" instance=ExtResource( 2 )]
+[connection signal="reset" from="CanvasLayer/InteractiveUI" to="." method="_on_InteractiveUI_reset"]
+[connection signal="solve" from="CanvasLayer/InteractiveUI" to="WaveFunction_v2" method="_on_InteractiveUI_solve"]
+[connection signal="speed_changed" from="CanvasLayer/InteractiveUI" to="WaveFunction_v2" method="_on_InteractiveUI_speed_changed"]
